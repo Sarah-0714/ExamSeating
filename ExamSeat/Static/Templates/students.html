@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamSeat | Students</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; background: #f5f7fb; color: #19243b; font-family: Inter, Arial, sans-serif; }
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 245px; flex-shrink: 0; background: #111b30; color: white; padding: 25px 17px; }
+        .logo { display: flex; align-items: center; gap: 11px; font-size: 22px; font-weight: 800; padding: 0 10px 35px; }
+        .logo-icon { background: #6276f5; padding: 10px 13px; border-radius: 12px; }
+        .nav-label { font-size: 10px; color: #8996b1; letter-spacing: 1.5px; padding: 12px; }
+        .nav a { display: block; color: #c2cbe0; text-decoration: none; padding: 13px 14px; border-radius: 9px; margin-bottom: 6px; font-size: 13px; }
+        .nav a.active, .nav a:hover { background: #2a3857; color: white; }
+        .side-bottom { margin-top: 45px; border-top: 1px solid #2a3650; padding: 20px 8px; font-size: 12px; color: #aab5ca; }
+        .main { flex: 1; min-width: 0; }
+        .topbar { background: white; border-bottom: 1px solid #e8ebf2; padding: 19px 30px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+        .topbar small { color: #8791a5; }
+        .profile { font-size: 12px; line-height: 1.7; }
+        .content { padding: 30px; max-width: 1500px; margin: auto; }
+        .heading { display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; margin-bottom: 24px; }
+        h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: -1px; }
+        .muted { color: #818ba0; font-size: 13px; line-height: 1.7; }
+        .card { background: white; border: 1px solid #e8ebf2; border-radius: 14px; padding: 23px; margin-bottom: 20px; }
+        .card h2 { font-size: 16px; margin: 0 0 8px; }
+        .upload-area { border: 2px dashed #d5dcf0; border-radius: 12px; background: #fafbff; text-align: center; padding: 28px 15px; margin-top: 18px; }
+        .upload-icon { font-size: 28px; color: #5267ed; margin-bottom: 10px; }
+        input[type="file"] { display: block; max-width: 100%; margin: 17px auto; font-size: 12px; }
+        .button { display: inline-block; border: 0; border-radius: 9px; padding: 12px 17px; background: #5267ed; color: white; font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: none; }
+        .button:hover { background: #4054d8; }
+        .search-row { display: flex; gap: 10px; margin: 17px 0; }
+        .search-row input { flex: 1; min-width: 0; padding: 12px 14px; border: 1px solid #e0e5ef; border-radius: 9px; outline-color: #5267ed; font-size: 13px; }
+        .message { background: #eef2ff; color: #4053a9; border: 1px solid #dfe5ff; border-radius: 9px; padding: 13px; font-size: 13px; margin-bottom: 18px; overflow-wrap: anywhere; }
+        .table-wrap { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 570px; }
+        th, td { padding: 14px 12px; text-align: left; border-bottom: 1px solid #edf0f5; font-size: 12px; }
+        th { background: #f8f9fc; color: #758198; font-weight: 700; }
+        td { color: #34415a; }
+        .reg { color: #5267ed; font-weight: 700; }
+        .pill { display: inline-block; background: #eef0ff; color: #5267ed; padding: 5px 9px; border-radius: 20px; font-size: 11px; }
+        .empty { padding: 30px; text-align: center; color: #818ba0; font-size: 13px; }
+        .stats { display: flex; align-items: center; gap: 12px; }
+        .stat-icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 11px; background: #eef0ff; color: #5267ed; font-size: 20px; }
+        .stat-number { font-size: 24px; font-weight: 800; }
+        .stat-label { color: #818ba0; font-size: 12px; margin-top: 3px; }
+        @media(max-width: 700px) {
+            .layout { display: block; }
+            .sidebar { width: 100%; padding: 16px; }
+            .logo { padding-bottom: 16px; }
+            .nav { display: flex; flex-wrap: wrap; gap: 5px; }
+            .nav-label, .side-bottom { display: none; }
+            .nav a { padding: 10px; margin: 0; }
+            .topbar { padding: 15px; }
+            .content { padding: 18px 13px; }
+            .card { padding: 16px; }
+            h1 { font-size: 24px; }
+            .search-row { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+    <aside class="sidebar">
+        <div class="logo"><span class="logo-icon">E</span> ExamSeat</div>
+        <div class="nav-label">WORKSPACE</div>
+        <nav class="nav">
+            <a href="{{ url_for('dashboard') }}">▦ &nbsp; Dashboard</a>
+            <a class="active" href="{{ url_for('students_page') }}">♙ &nbsp; Students</a>
+            <a href="{{ url_for('seating_page') }}">▤ &nbsp; Seating Arrangement</a>
+        </nav>
+        <div class="side-bottom">Smart Examination Management<br><br>Version 1.0 · Local workspace</div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div><strong>Student Management</strong><br><small>ExamSeat / Students</small></div>
+            <div class="profile">
+                <strong>{{ user.name }}</strong><br>
+                <small>{{ user.email }}</small>
+            </div>
+        </header>
+
+        <section class="content">
+            <div class="heading">
+                <div>
+                    <h1>Student Management</h1>
+                    <div class="muted">Import, search, and review examination student records.</div>
+                </div>
+                <a class="button" href="{{ url_for('dashboard') }}">← Dashboard</a>
+            </div>
+
+            {% if message %}
+            <div class="message">{{ message }}</div>
+            {% endif %}
+
+            <section class="card">
+                <h2>Upload Student CSV</h2>
+                <p class="muted">Your CSV must contain Register No, Name, and Subject columns.</p>
+
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="upload-area">
+                        <div class="upload-icon">⇧</div>
+                        <strong>Import your student roster</strong>
+                        <p class="muted">Choose a CSV file from your computer.</p>
+                        <input type="file" name="file" accept=".csv" required>
+                        <button class="button" type="submit">Upload Students</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="card">
+                <div class="stats">
+                    <div class="stat-icon">♙</div>
+                    <div>
+                        <div class="stat-number">{{ total_students }}</div>
+                        <div class="stat-label">Total students in current session</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>Student Records</h2>
+                <p class="muted">Search by register number, student name, or subject.</p>
+
+                <form method="GET" action="{{ url_for('students_page') }}" class="search-row">
+                    <input type="search" name="q" value="{{ query }}"
+                           placeholder="Search students..." aria-label="Search students">
+                    <button class="button" type="submit">Search</button>
+                    <a class="button" href="{{ url_for('students_page') }}"
+                       style="background:#e9edfa;color:#4053a9;">Reset</a>
+                </form>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Register Number</th>
+                                <th>Student Name</th>
+                                <th>Subject</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td class="reg">{{ student["Register No"] }}</td>
+                                <td>{{ student["Name"] }}</td>
+                                <td><span class="pill">{{ student["Subject"] }}</span></td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4" class="empty">
+                                    No student records found. Upload a CSV to get started.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="muted" style="margin-top:15px;">
+                    Showing {{ students|length }} matching record(s).
+                </p>
+            </section>
+
+            <p style="text-align:right;">
+                <a href="{{ url_for('logout') }}" class="muted">Sign out</a>
+            </p>
+        </section>
+    </main>
+</div>
+</body>
+</html>

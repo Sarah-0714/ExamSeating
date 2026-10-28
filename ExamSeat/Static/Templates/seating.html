@@ -1,0 +1,1080 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamSeat | Seating Arrangement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f5f7fb;
+            color: #19243b;
+            font-family: Inter, Arial, sans-serif;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 245px;
+            flex-shrink: 0;
+            background: #111b30;
+            color: white;
+            padding: 25px 17px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-size: 22px;
+            font-weight: 800;
+            padding: 0 10px 35px;
+        }
+
+        .logo-icon {
+            background: #6276f5;
+            padding: 10px 13px;
+            border-radius: 12px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            color: #8996b1;
+            letter-spacing: 1.5px;
+            padding: 12px;
+        }
+
+        .nav a {
+            display: block;
+            color: #c2cbe0;
+            text-decoration: none;
+            padding: 13px 14px;
+            border-radius: 9px;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .nav a.active,
+        .nav a:hover {
+            background: #2a3857;
+            color: white;
+        }
+
+        .side-bottom {
+            margin-top: 45px;
+            border-top: 1px solid #2a3650;
+            padding: 20px 8px;
+            font-size: 12px;
+            color: #aab5ca;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .topbar {
+            background: white;
+            border-bottom: 1px solid #e8ebf2;
+            padding: 19px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .topbar small,
+        .muted {
+            color: #818ba0;
+        }
+
+        .topbar small {
+            font-size: 12px;
+        }
+
+        .content {
+            padding: 30px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        .heading,
+        .hall-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .heading {
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+            letter-spacing: -1px;
+        }
+
+        h2 {
+            font-size: 16px;
+            margin: 0 0 8px;
+        }
+
+        .muted {
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .button {
+            display: inline-block;
+            border: 0;
+            border-radius: 9px;
+            padding: 12px 16px;
+            text-decoration: none;
+            background: #5267ed;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .button:hover {
+            background: #4054d8;
+            transform: translateY(-1px);
+        }
+
+        .button.secondary {
+            background: #eef0ff;
+            color: #5267ed;
+        }
+
+        .button.secondary:hover {
+            background: #dfe4ff;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e8ebf2;
+            border-radius: 14px;
+            padding: 22px;
+            min-width: 0;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(20, 35, 80, 0.025);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #818ba0;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            margin-top: 12px;
+        }
+
+        .stat-icon {
+            width: 39px;
+            height: 39px;
+            display: grid;
+            place-items: center;
+            border-radius: 11px;
+            background: #eef0ff;
+            color: #5267ed;
+            font-size: 19px;
+            margin-bottom: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 17px;
+            margin-top: 20px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dfe4ef;
+            border-radius: 9px;
+            outline-color: #5267ed;
+            background: white;
+            color: #19243b;
+            font-size: 13px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .alert {
+            padding: 13px 15px;
+            border-radius: 9px;
+            background: #eef2ff;
+            border: 1px solid #dfe5ff;
+            color: #4053a9;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .hall-heading {
+            margin-bottom: 20px;
+        }
+
+        .legend {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            font-size: 11px;
+            color: #818ba0;
+            margin: 15px 0 22px;
+        }
+
+        .legend span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            border-radius: 4px;
+        }
+
+        .seat-grid {
+            display: grid;
+            grid-template-columns: repeat(var(--columns, 6), minmax(34px, 1fr));
+            gap: 9px;
+            overflow-x: auto;
+        }
+
+        .seat {
+            min-height: 49px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #d9def0;
+            border-radius: 8px;
+            background: #eef0ff;
+            color: #5267ed;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 2px;
+            text-align: center;
+            overflow-wrap: anywhere;
+            transition: 0.2s ease;
+        }
+
+        .seat small {
+            font-size: 9px;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        .seat.occupied {
+            background: #e4f8ed;
+            border-color: #bcebd0;
+            color: #17844d;
+        }
+
+        /* Highlight the searched student's exact seat */
+        .seat.highlighted {
+            background: #ffcf57 !important;
+            color: #402900 !important;
+            border: 3px solid #e58b00 !important;
+            box-shadow: 0 0 0 4px #ffe8a5;
+            transform: scale(1.04);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hall-stage {
+            background: #f0f2f8;
+            border: 1px solid #e2e6ef;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            font-size: 11px;
+            color: #77839a;
+            letter-spacing: 2px;
+            margin-bottom: 22px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px 15px;
+            color: #818ba0;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th,
+        td {
+            padding: 13px 12px;
+            text-align: left;
+            border-bottom: 1px solid #edf0f5;
+            font-size: 12px;
+        }
+
+        th {
+            background: #f8f9fc;
+            color: #758198;
+        }
+
+        /* Premium student search panel */
+        .seat-search {
+            background: linear-gradient(135deg, #ffffff, #f6f8ff);
+            border: 1px solid #e2e7fb;
+            border-radius: 16px;
+            padding: 24px;
+            margin: 4px 0 25px;
+            box-shadow: 0 8px 24px rgba(38, 56, 120, 0.06);
+        }
+
+        .search-title-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            margin-bottom: 18px;
+        }
+
+        .search-icon {
+            width: 45px;
+            height: 45px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: #e9edff;
+            color: #5267ed;
+            font-size: 23px;
+        }
+
+        .search-title-row h2 {
+            margin: 1px 0 5px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-input-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 230px;
+        }
+
+        .search-input-wrap input {
+            width: 100%;
+            min-height: 46px;
+            padding: 13px 15px 13px 42px;
+            border: 1px solid #dce2f1;
+            border-radius: 10px;
+            background: white;
+            color: #19243b;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search-input-wrap input:focus {
+            border-color: #5267ed;
+            box-shadow: 0 0 0 4px rgba(82, 103, 237, 0.12);
+        }
+
+        .search-input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8792ad;
+            font-size: 20px;
+            pointer-events: none;
+        }
+
+        .search-form .button {
+            min-height: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-result {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+            padding: 18px;
+            background: #f0fbf4;
+            border: 1px solid #ccebd7;
+            border-radius: 12px;
+        }
+
+        .search-result-heading {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: #176b3b;
+            font-size: 13px;
+            font-weight: 800;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #d6efdf;
+        }
+
+        .result-check {
+            display: inline-grid;
+            place-items: center;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #d7f5e2;
+            color: #177742;
+            font-size: 15px;
+        }
+
+        .result-item {
+            padding: 12px;
+            background: white;
+            border: 1px solid #e0f0e5;
+            border-radius: 9px;
+            min-width: 0;
+        }
+
+        .result-item span {
+            display: block;
+            color: #77839a;
+            font-size: 10px;
+            margin-bottom: 7px;
+        }
+
+        .result-item strong {
+            display: block;
+            color: #24344a;
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .search-result.not-found {
+            display: block;
+            background: #fff7ed;
+            border-color: #fed7aa;
+            color: #9a5310;
+            line-height: 1.8;
+        }
+
+        .search-result.not-found strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Highlight the matching row in the allocation table */
+        tr.search-row td {
+            background: #fff4cf;
+            color: #654400;
+            font-weight: 700;
+            border-bottom-color: #f3d98d;
+        }
+
+        .message {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #5267ed;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 1000px) {
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .form-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .search-result {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 700px) {
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 16px;
+            }
+
+            .logo {
+                padding-bottom: 16px;
+            }
+
+            .nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .nav-label,
+            .side-bottom {
+                display: none;
+            }
+
+            .nav a {
+                padding: 10px;
+                margin: 0;
+            }
+
+            .topbar {
+                padding: 15px;
+            }
+
+            .content {
+                padding: 18px 13px;
+            }
+
+            .stats,
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .seat-grid {
+                gap: 5px;
+            }
+
+            .seat {
+                min-height: 40px;
+                font-size: 10px;
+            }
+
+            .seat-search {
+                padding: 17px;
+            }
+
+            .search-input-wrap {
+                min-width: 100%;
+            }
+
+            .search-form .button {
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .stats,
+            .form-grid,
+            .search-result {
+                grid-template-columns: 1fr;
+            }
+
+            .search-result-heading {
+                grid-column: auto;
+            }
+
+            .topbar {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="logo">
+            <span class="logo-icon">E</span>
+            ExamSeat
+        </div>
+
+        <div class="nav-label">WORKSPACE</div>
+
+        <nav class="nav">
+            <a href="{{ url_for('dashboard') }}">▦ &nbsp; Dashboard</a>
+            <a href="{{ url_for('students_page') }}">♙ &nbsp; Students</a>
+            <a class="active" href="{{ url_for('seating_page') }}">
+                ▤ &nbsp; Seating Arrangement
+            </a>
+        </nav>
+
+        <div class="side-bottom">
+            Smart Examination Management
+            <br><br>
+            Version 1.0 · Local workspace
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <strong>Seating Arrangement</strong>
+                <br>
+                <small>ExamSeat / Hall Configuration</small>
+            </div>
+
+            <div style="font-size:12px;line-height:1.7;">
+                <strong>{{ user.name }}</strong>
+                <br>
+                <small>{{ user.email }}</small>
+            </div>
+        </header>
+
+        <section class="content">
+
+            <div class="heading">
+                <div>
+                    <h1>Seating Arrangement</h1>
+                    <div class="muted">
+                        Configure examination halls and preview student seat allocation.
+                    </div>
+                </div>
+
+                <a class="button secondary"
+                   href="{{ url_for('dashboard') }}">
+                    ← Dashboard
+                </a>
+            </div>
+
+            {% if message %}
+                <div class="alert">{{ message }}</div>
+            {% endif %}
+
+            <!-- Summary cards -->
+            <div class="stats">
+
+                <div class="card">
+                    <div class="stat-icon">▦</div>
+                    <div class="stat-label">Configured Halls</div>
+                    <div class="stat-number">{{ halls|length }}</div>
+                </div>
+
+                <div class="card">
+                    <div class="stat-icon">♙</div>
+                    <div class="stat-label">Students Allocated</div>
+                    <div class="stat-number">{{ allocations|length }}</div>
+                </div>
+
+                <div class="card">
+                    <div class="stat-icon">✓</div>
+                    <div class="stat-label">Total Seat Capacity</div>
+                    <div class="stat-number">{{ total_capacity }}</div>
+                </div>
+
+            </div>
+
+            <!-- Add examination hall -->
+            <section class="card">
+
+                <h2>Configure Examination Hall</h2>
+
+                <p class="muted">
+                    Enter a unique hall name, number of rows, and seats per row.
+                </p>
+
+                <form method="POST" action="{{ url_for('seating_page') }}">
+                    <input type="hidden" name="action" value="add_hall">
+
+                    <div class="form-grid">
+
+                        <div class="field">
+                            <label for="hall_name">Hall Name</label>
+                            <input
+                                id="hall_name"
+                                name="hall_name"
+                                type="text"
+                                placeholder="e.g. Hall-1"
+                                required
+                            >
+                        </div>
+
+                        <div class="field">
+                            <label for="rows">Number of Rows</label>
+                            <input
+                                id="rows"
+                                name="rows"
+                                type="number"
+                                min="1"
+                                max="100"
+                                value="25"
+                                required
+                            >
+                        </div>
+
+                        <div class="field">
+                            <label for="columns">Seats per Row</label>
+                            <input
+                                id="columns"
+                                name="columns"
+                                type="number"
+                                min="1"
+                                max="100"
+                                value="20"
+                                required
+                            >
+                        </div>
+
+                    </div>
+
+                    <div class="message">
+                        Hall capacity = number of rows × seats per row.
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="button" type="submit">
+                            + Add Examination Hall
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Seat map and student finder -->
+            <section class="card">
+
+                <!-- Premium Student Search -->
+                <div class="seat-search">
+
+                    <div class="search-title-row">
+                        <div class="search-icon">⌕</div>
+                        <div>
+                            <h2>Find a Student's Seat</h2>
+                            <p class="muted">
+                                Enter a student name or register number to find their exact examination seat.
+                            </p>
+                        </div>
+                    </div>
+
+                    <form
+                        method="GET"
+                        action="{{ url_for('seating_page') }}"
+                        class="search-form"
+                    >
+                        <div class="search-input-wrap">
+                            <span class="search-input-icon">⌕</span>
+                            <input
+                                type="search"
+                                name="q"
+                                value="{{ search_query|default('') }}"
+                                placeholder="Enter student name or register number..."
+                                aria-label="Search by student name or register number"
+                                required
+                            >
+                        </div>
+
+                        <button class="button" type="submit">
+                            Find Seat →
+                        </button>
+
+                        {% if search_query|default('') %}
+                            <a
+                                class="button secondary"
+                                href="{{ url_for('seating_page') }}"
+                            >
+                                Clear Search
+                            </a>
+                        {% endif %}
+                    </form>
+
+                    {% if search_query|default('') %}
+                        {% if search_result %}
+
+                            <div class="search-result">
+
+                                <div class="search-result-heading">
+                                    <span class="result-check">✓</span>
+                                    Student found — assigned seat highlighted below
+                                </div>
+
+                                <div class="result-item">
+                                    <span>Student Name</span>
+                                    <strong>{{ search_result['Name'] }}</strong>
+                                </div>
+
+                                <div class="result-item">
+                                    <span>Register Number</span>
+                                    <strong>{{ search_result['Register No'] }}</strong>
+                                </div>
+
+                                <div class="result-item">
+                                    <span>Subject</span>
+                                    <strong>{{ search_result['Subject'] }}</strong>
+                                </div>
+
+                                <div class="result-item">
+                                    <span>Examination Hall</span>
+                                    <strong>{{ search_result['Hall'] }}</strong>
+                                </div>
+
+                                <div class="result-item">
+                                    <span>Row / Column</span>
+                                    <strong>
+                                        {{ search_result['Row'] }} /
+                                        {{ search_result['Column'] }}
+                                    </strong>
+                                </div>
+
+                                <div class="result-item">
+                                    <span>Seat Number</span>
+                                    <strong>{{ search_result['Seat'] }}</strong>
+                                </div>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="search-result not-found">
+                                <strong>No allocated student found.</strong>
+                                Check the spelling or register number. If you have not generated seating yet, click
+                                <strong>Generate Seating</strong> first.
+                            </div>
+
+                        {% endif %}
+                    {% endif %}
+
+                </div>
+
+                <div class="hall-heading">
+                    <div>
+                        <h2>Hall Seat Map</h2>
+                        <p class="muted">
+                            Generate seating to view assigned students in each seat.
+                        </p>
+                    </div>
+
+                    <form method="POST" action="{{ url_for('seating_page') }}">
+                        <input type="hidden" name="action" value="generate">
+
+                        <button class="button" type="submit">
+                            Generate Seating
+                        </button>
+                    </form>
+                </div>
+
+                <div class="legend">
+                    <span>
+                        <i class="dot" style="background:#e4f8ed;"></i>
+                        Allocated
+                    </span>
+
+                    <span>
+                        <i class="dot" style="background:#eef0ff;"></i>
+                        Available
+                    </span>
+
+                    <span>
+                        <i class="dot" style="background:#ffcf57;"></i>
+                        Searched Seat
+                    </span>
+                </div>
+
+                {% if halls %}
+
+                    {% for hall in halls %}
+
+                        <div style="margin-top:24px;">
+
+                            <div class="hall-heading">
+                                <div>
+                                    <strong>{{ hall.name }}</strong>
+
+                                    <div class="muted">
+                                        {{ hall.rows }} rows × {{ hall.columns }} columns
+                                        · Capacity: {{ hall.rows * hall.columns }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="hall-stage">
+                                EXAMINATION DESK / FRONT
+                            </div>
+
+                            <div
+                                class="seat-grid"
+                                style="--columns: {{ hall.columns }};"
+                            >
+
+                                {% for row in range(1, hall.rows + 1) %}
+
+                                    {% for col in range(1, hall.columns + 1) %}
+
+                                        {% set ns = namespace(student=None, highlighted=false) %}
+
+                                        {% for item in allocations %}
+                                            {% if item['Hall'] == hall.name
+                                                and item['Row'] == row
+                                                and item['Column'] == col %}
+
+                                                {% set ns.student = item['Name'] %}
+
+                                                {% if search_result
+                                                    and item['Register No'] == search_result['Register No'] %}
+                                                    {% set ns.highlighted = true %}
+                                                {% endif %}
+
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        <div class="seat {% if ns.student %}occupied{% endif %} {% if ns.highlighted %}highlighted{% endif %}">
+                                            R{{ row }}-C{{ col }}
+
+                                            <small>
+                                                {% if ns.student %}
+                                                    {{ ns.student }}
+                                                {% else %}
+                                                    Available
+                                                {% endif %}
+                                            </small>
+                                        </div>
+
+                                    {% endfor %}
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div class="empty">
+                        <div style="font-size:32px;">▦</div>
+                        <strong>No examination halls configured</strong>
+                        <br>
+                        Add a hall above to start creating your seating plan.
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+            <!-- Allocation table -->
+            <section class="card">
+
+                <h2>Seat Allocation Details</h2>
+
+                <p class="muted">
+                    Student register numbers and their assigned examination seats.
+                </p>
+
+                {% if allocations %}
+
+                    <div class="table-wrap">
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Register Number</th>
+                                    <th>Student Name</th>
+                                    <th>Subject</th>
+                                    <th>Hall</th>
+                                    <th>Seat</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                {% for item in allocations %}
+
+                                    <tr {% if search_result and item['Register No'] == search_result['Register No'] %}class="search-row"{% endif %}>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ item['Register No'] }}</td>
+                                        <td>{{ item['Name'] }}</td>
+                                        <td>{{ item['Subject'] }}</td>
+                                        <td>{{ item['Hall'] }}</td>
+                                        <td>{{ item['Seat'] }}</td>
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="form-actions">
+                        <a class="button" href="{{ url_for('export_csv') }}">
+                            ↓ Export Seating CSV
+                        </a>
+                    </div>
+
+                {% else %}
+
+                    <div class="empty">
+                        No allocations available yet.
+                        <br>
+                        Upload student records, add a hall, and click Generate Seating.
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+            <p style="text-align:right;">
+                <a href="{{ url_for('logout') }}" class="muted">Sign out</a>
+            </p>
+
+        </section>
+    </main>
+</div>
+</body>
+</html>

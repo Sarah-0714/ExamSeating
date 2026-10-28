@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamSeat | Sign In</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="login-page">
+
+    <main class="login-layout">
+        <section class="brand-panel">
+            <div class="brand">
+                <div class="brand-icon">E</div>
+                <span>ExamSeat</span>
+            </div>
+
+            <div class="brand-content">
+                <span class="eyebrow">SMART EXAM MANAGEMENT</span>
+                <h1>Every student.<br>Every seat.<br><span>Perfectly planned.</span></h1>
+                <p>A smarter way to organize examination halls, manage student records, and generate seating arrangements.</p>
+
+                <div class="feature-list">
+                    <div><span class="check">✓</span> Intelligent seat allocation</div>
+                    <div><span class="check">✓</span> Organized examination halls</div>
+                    <div><span class="check">✓</span> Simple student management</div>
+                </div>
+            </div>
+
+            <div class="brand-footer">EXAMSEAT · SMARTER EXAMINATIONS</div>
+        </section>
+
+        <section class="form-panel">
+            <div class="mobile-brand">
+                <div class="brand-icon">E</div>
+                <span>ExamSeat</span>
+            </div>
+
+            <div class="login-card">
+                <div class="welcome-icon">✦</div>
+                <p class="welcome-label">WELCOME TO EXAMSEAT</p>
+                <h2>Sign in to continue</h2>
+                <p class="subtitle">Access your examination management dashboard.</p>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="flash-message">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <a class="google-button" href="{{ url_for('google_login') }}">
+                    <svg width="21" height="21" viewBox="0 0 48 48" aria-hidden="true">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.03 13.22l7.98 6.19C11.9 13.72 17.4 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.74 7.18l7.73 6C44.43 37.96 46.98 31.85 46.98 24.55z"/>
+                        <path fill="#FBBC05" d="M10.02 28.59A14.4 14.4 0 0 1 9.25 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.87.93 7.52 2.57 10.78l7.45-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.91-5.8l-7.73-6c-2.14 1.44-4.89 2.3-8.18 2.3-6.6 0-12.1-4.22-14-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                    <span>Continue with Google</span>
+                    <span class="button-arrow">→</span>
+                </a>
+
+                <div class="secure-note">
+                    <span>♧</span>
+                    Secure sign-in powered by Google
+                </div>
+
+                <div class="divider-line"><span>YOUR WORKSPACE</span></div>
+
+                <div class="info-card">
+                    <div class="info-symbol">⌘</div>
+                    <div>
+                        <strong>One account. One dashboard.</strong>
+                        <p>Manage your examination workflow in one place.</p>
+                    </div>
+                </div>
+
+                <p class="terms">By continuing, you agree to use ExamSeat responsibly.</p>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>
